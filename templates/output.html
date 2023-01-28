@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/output.css')}}">
+    <title>Вывод</title>
+</head>
+<body>
+{# Заголовок, показывающий количество записей в базе #}
+<h1>Количество записей в базе: {{ names | length }}</h1>
+
+{# Вводим счётчики отображения записей и имён в них #}
+{% set counter = namespace(record = 0, index = 0) %}
+
+{# Перебираем поступившие данные, выводим на экран #}
+<div class="wrapper">
+    {% for name in names %}
+    {% set counter.record = counter.record + 1 %}
+    {% set counter.index = 0%}
+    <div class="record-container">
+        <p class="record-header">Запись №{{counter.record}}</p>
+        {% for value in name["names"] %}
+        {% set counter.index = counter.index + 1 %}
+
+        {# Если запись пустая, то ставится три прочерка #}
+        {% if name["names"][value] == '' %}
+        {% set current_name = '---' %}
+        {% else %}
+        {% set current_name = name["names"][value] %}
+        {% endif %}
+
+        <p>Имя {{ counter.index}}: {{ current_name }}</p>
+        {% endfor %}
+        </div>
+        {% endfor %}
+
+</div>
+</body>
+</html>
